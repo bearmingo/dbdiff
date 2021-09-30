@@ -48,7 +48,11 @@ func (c *Column) GetSQL() string {
 		result += " NOT NULL"
 	}
 	if c.Default != "" {
-		result += " DEFAULT " + c.Default
+		if c.Type == "time" || c.Type == "datetime" || strings.HasPrefix(c.Type, "varchar") {
+			result += " DEFAULT '" + c.Default + "'"
+		} else {
+			result += " DEFAULT " + c.Default
+		}
 	}
 	if c.Extra != "" {
 		result += " " + c.Extra
